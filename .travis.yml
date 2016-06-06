@@ -36,11 +36,16 @@ install:
 script:
 - npm test
 before_deploy:
+- npm install --build-from-source --production
+- npm install meshblu-connector-packager
+- npm dedupe
+- npm install -g flatten-packages
+- flatten-packages
 - npm run package
 deploy:
 - provider: releases
   api_key:
-    [github-release-key]
+    secure: "Ds+KKbksN2P0xkpWXC85TBWtXVyCWBzJw4u7VpX+aoPf4hBz8VKj+c5+AtFmMGmPzGmVwOoMERGIJubJDAINuX/7QhyHvd1F5cln3PEKm6W4zRX3UwB77FsaN0uqdRmT4DOXqqCRqoOcNbxOIEUWNxAsgS+AfV2Zv37TK2d0tv8gWfwAMWmYgT0ZC7MC7DAoNDDpVSfgWX6+YnQ/XgFDLaN+Eyuppnd++EIF3ZAC4yrMpNcr2mkEaL3e3SPyWAQRGzO0gkVGXIbEt7fCac7ks0la6VVaFjdzQJJXj6rapZLSNczRsRarFPyDDVNybzBVU8nMQqn+ZoQkEl+sb0Tq7CKyHSkvAI3eZDkZft3sttX4fu+0DWh4lsAAJrwvxi/fcEa7eNKJtIS8evjCGnpOHRQJrqzKY6ABiVbZQkB82Ow/zXafc7rvuvVqcr5VF7E9ng/+2v79lpUmTpfbT5rBlLFHMUeVjBYyU9TEbB99aFZ4uICyNutrv2HDjBrsBRPW99STz7BJ5lS9QkfgQwt3eBDXcgxUY50jKa2bOZPhNc9EQkOlnTq5F8YVSTB3/2zLotE5tkPfYsnaRAN68xpHn93cOHRjqRGECqcVV1HUBD8sViv6C4ctbJ2chw/mWWqmPOIzIw/1SevDGubiovhbSmatxNAKAjCeObEISFKjXAM="
   file_glob: true
   file:
   - "deploy/*"
@@ -48,9 +53,9 @@ deploy:
   on:
     tags: true
 - provider: npm
-  email: [npm-email]
+  email: serveradmin@octoblu.com
   api_key:
-    [npm-release-key]
+    secure: "AeJ6t+gr8Mjnm/C5/HdXMofnnp3QkgjKzBEMtTHnRNjkQDDDKdNcinjE9wDPhbWrvlyDPBEMDtPynv8EAGsrX7GHUaukoHPcR71Ulc6JJ9wZAP8dFfMpQPfXTcElicx4r90q7pywIPHHAbiJFcz3V3Aj84oEECxWn/MIHm8cKzkBE9EDF18FGq0OhSZQ8gVsUPM1jFRs6X/mPoJ86OvkMh6MfFTeYwm7q9n9bjGeUmFuQvxmQryaI9LWY5F1eTweYSI9tMpbZpkhe9PpJbIxoB8tj2Ehjxuo3uQz/xD2J+NOiiI8SCnkkcL4Vh13qA0v3lyf8nFcFQny/A5qKVkDbu9i1ep6JXAzYH+6/VOzrXkcX3L6a+pDeXtCMsDtRbg3ueW04JLIsnFiV+7x2IyZm8QWreXrXU7qqg5tjdQsFwtK5QBksXjbetz70/efAhjx4lsm+8Zc41g4pYgB4/nQVKJ74kEnMNWk33Jwssqr3+egnfnH2pbQ1b4WSIvmWGeXqsHQEy3FS3gRCgyXENgDGDxbeYOfdZSKzs8kz0U59H1EmUXulF82sYtS+vLNWXXD4zS/aPjgbRfqqwQovBjOacieYmXnYqi1LHw3DnHc+VbmbddB6TJFIeW/B/MBgkYbjblM2sd7pw7WVRayFMhSgOnIrLaEHXEFlrMUw5V5gro="
   on:
     tags: true
     condition: "$NPM_PUBLISH = true"

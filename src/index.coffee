@@ -3,7 +3,6 @@ debug           = require('debug')('meshblu-connector-lifx:index')
 lifx            = require 'lifx'
 tinycolor       = require 'tinycolor2'
 _               = require 'lodash'
-schemas         = require './legacySchemas.coffee'
 
 class Lifx extends EventEmitter
   constructor: ->
@@ -11,13 +10,6 @@ class Lifx extends EventEmitter
     @UINT16_MAX = 65535
     @MAX_KELVIN = 9000
     @_lifx = undefined
-
-  isOnline: (callback) =>
-    callback null, running: true
-
-  close: (callback) =>
-    debug 'on close'
-    callback()
 
   onMessage: (message) =>
     return unless message?
@@ -58,7 +50,6 @@ class Lifx extends EventEmitter
   start: (device) =>
     { @uuid } = device
     debug 'started', @uuid
-    @emit 'update', schemas
     @_lifx = lifx.init()
 
 module.exports = Lifx

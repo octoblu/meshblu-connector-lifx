@@ -3,59 +3,51 @@
     "version": "1.0.0",
     "form": {
       "message": {
-        "url": null
-      },
-      "configure": {
-        "url": null
+        "example-01": {
+          "angular": {
+            "schema": ["*"]
+          }
+        }
       }
     },
     "configure": {
-      "url": null,
-      "options": {
-        "type" : "object",
-        "properties" : {
-          "type" : "object",
-          "properties" : {
-            "example" : {
-              "type" : "string"
+      "my-default-config": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type" : "object",
+            "properties" : {
+              "example" : {
+                "type" : "string"
+              }
             }
           }
         }
       }
     },
     "message": {
-      "url": null,
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "definitions": {
-        "example-message-01": {
-          "type": "object",
-          "properties": {
-            "example-opt": {
-              "type": "string"
-            },
-            "another-example-opt":{
-              "type": "string"
-            }
+      "example-message-01": {
+        "type": "object",
+        "properties": {
+          "bulbName": {
+            "type": "string",
+            "required": true
           },
-          "required": ["example-opt", "another-example-opt"]
-        },
-        "example-message-02": {
-          "type": "object",
-          "properties": {
-            "some-opt": {
-              "type": "string"
-            },
-            "another-some-opt":{
-              "type": "string"
-            }
+          "on": {
+            "type": "boolean",
+            "required": true
           },
-          "required": ["some-opt", "another-some-opt"]
+          "color": {
+            "type": "string",
+            "required": true
+          },
+          "timing": {
+            "type": "number"
+          },
+          "white": {
+            "type": "number"
+          }
         }
-      },
-      "type": "object",
-      "properties": {
-        "example-message-01": { "$ref": "#/definitions/example-message-01" },
-        "example-message-02": { "$ref": "#/definitions/example-message-02" }
       }
     }
   }

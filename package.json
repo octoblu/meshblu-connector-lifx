@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-lifx",
-  "version": "0.1.1",
+  "version": "1.0.1",
   "description": "Meshblu Connector ",
   "homepage": "https://github.com/octoblu/lifx",
   "bugs": "https://github.com/octoblu/lifx/issues",
@@ -29,15 +29,15 @@
   "dependencies": {
     "coffee-script": "^1.10.0",
     "debug": "^2.2.0",
-    "eventemitter2": "^1.0.0",
     "lifx": "^0.3.1",
     "lodash": "^4.12.0",
-    "meshblu-connector-runner": "^3.0.2",
-    "tinycolor2": "^1.3.0"
+    "meshblu-connector-runner": "^6.0.0",
+    "tinycolor2": "^1.3.0",
+    "meshblu-config": "^4.0.0"
   },
   "meshbluConnector": {
     "githubSlug": "octoblu/meshblu-connector-lifx",
-    "schemasUrl": "https://raw.githubusercontent.com/octoblu/meshblu-connector-lifx/v1.0.0/schemas.json"
+    "schemasUrl": "https://raw.githubusercontent.com/octoblu/meshblu-connector-lifx/v1.0.1/schemas.json"
   },
   "platformDependencies": {
     "darwin": [],
