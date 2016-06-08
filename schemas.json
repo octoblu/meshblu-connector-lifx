@@ -1,53 +1,32 @@
 {
   "schemas": {
     "version": "1.0.0",
-    "form": {
-      "message": {
-        "example-01": {
-          "angular": {
-            "schema": ["*"]
-          }
-        }
-      }
-    },
-    "configure": {
-      "my-default-config": {
-        "type": "object",
-        "properties": {
-          "options": {
-            "type" : "object",
-            "properties" : {
-              "example" : {
-                "type" : "string"
-              }
-            }
-          }
-        }
-      }
-    },
     "message": {
-      "example-message-01": {
+      "configure-light": {
+        "title": "Configure Light",
         "type": "object",
         "properties": {
           "bulbName": {
-            "type": "string",
-            "required": true
+            "title": "Bulb Name",
+            "description": "If not specified, it will use the first lifx found",
+            "type": "string"
           },
           "on": {
+            "title": "Light On",
             "type": "boolean",
-            "required": true
+            "default": true
           },
           "color": {
-            "type": "string",
-            "required": true
+            "title": "Color",
+            "type": "string"
           },
           "timing": {
-            "type": "number"
-          },
-          "white": {
-            "type": "number"
+            "title": "Timing",
+            "type": "number",
+            "default": 0
           }
-        }
+        },
+        "required": ["on", "color"]
       }
     }
   }

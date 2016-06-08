@@ -1,34 +1,27 @@
+_               = require 'lodash'
 {EventEmitter}  = require 'events'
-debug           = require('debug')('meshblu-connector-lifx:index')
 lifx            = require 'lifx'
 tinycolor       = require 'tinycolor2'
-_               = require 'lodash'
+debug           = require('debug')('meshblu-connector-lifx:index')
 
 class Lifx extends EventEmitter
   constructor: ->
-    debug 'Lifx constructed'
     @UINT16_MAX = 65535
     @MAX_KELVIN = 9000
-    @_lifx = undefined
 
-  onMessage: (message) =>
-    return unless message?
-    { topic, devices, fromUuid } = message
-    return if '*' in devices
-    return if fromUuid == @uuid
-    debug 'onMessage', { topic }
-    {payload} = message
-    @updateLifx(payload)
+  onMessage: (message={}) =>
+    { payload } = message
+    @updateLifx payload
 
-  onConfig: (config) =>
-    return unless config?
-    debug 'on config', @uuid
+  getBulb: (bulbName) =>
+    return _.first @_lifx.bulbs unless bulbName
+    return _.first @_lifx.bulbs unless '*'
+    debug 'searching for bulbName', bulbName
+    return _.find @_lifx.bulbs, { name: bulbName }
 
-  updateLifx: (payload) =>
-    bulb = undefined
-    if payload.on == false
-      payload.color = 'rgba(0,0,0,0.0)'
-
+  updateLifx: (payload={}) =>
+    payload.on ?= true
+    payload.color = 'rgba(0,0,0,0.0)' unless payload.on
     hsv      = tinycolor(payload.color).toHsv()
     hue      = parseInt((hsv.h/360) * @UINT16_MAX)
     sat      = parseInt(hsv.s * @UINT16_MAX)
@@ -37,19 +30,12 @@ class Lifx extends EventEmitter
     timing   = payload.timing || 0
     bulbName = payload.bulbName
 
-    if bulbName != '*'
-      debug 'searching for bulbName', bulbName
-      bulb = _.find(@_lifx.bulbs, {name: bulbName})
-      debug 'found bulb', bulb
-
-    debug 'lightsOn', bulb
+    bulb = @getBulb bulbName
+    return console.error('Unable to find bulb') unless bulb?
     @_lifx.lightsOn bulb
-    debug 'lightsColour', hue, sat, bri, temp, timing, bulb
     @_lifx.lightsColour hue, sat, bri, temp, timing, bulb
 
-  start: (device) =>
-    { @uuid } = device
-    debug 'started', @uuid
+  start: =>
     @_lifx = lifx.init()
 
 module.exports = Lifx

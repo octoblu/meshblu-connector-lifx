@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-lifx",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Meshblu Connector ",
   "homepage": "https://github.com/octoblu/lifx",
   "bugs": "https://github.com/octoblu/lifx/issues",
@@ -37,7 +37,7 @@
   },
   "meshbluConnector": {
     "githubSlug": "octoblu/meshblu-connector-lifx",
-    "schemasUrl": "https://raw.githubusercontent.com/octoblu/meshblu-connector-lifx/v1.0.1/schemas.json"
+    "schemasUrl": "https://raw.githubusercontent.com/octoblu/meshblu-connector-lifx/v2.0.0/schemas.json"
   },
   "platformDependencies": {
     "darwin": [],
