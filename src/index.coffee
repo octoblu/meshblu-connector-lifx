@@ -11,16 +11,20 @@ class Lifx extends EventEmitter
 
   onMessage: (message={}) =>
     { payload } = message
+    @_lifx = lifx.init() unless @_lifx?
     @updateLifx payload
 
   getBulb: (bulbName) =>
-    return _.first @_lifx.bulbs unless bulbName
-    return _.first @_lifx.bulbs unless '*'
+    { bulbs } = @_lifx
+    return null if _.isEmpty(bulbs)
+    return _.first bulbs unless bulbName
+    return _.first bulbs unless '*'
     debug 'searching for bulbName', bulbName
-    return _.find @_lifx.bulbs, { name: bulbName }
+    return _.find bulbs, { name: bulbName }
 
   updateLifx: (payload={}) =>
     payload.on ?= true
+    payload.color ?= 'white'
     payload.color = 'rgba(0,0,0,0.0)' unless payload.on
     hsv      = tinycolor(payload.color).toHsv()
     hue      = parseInt((hsv.h/360) * @UINT16_MAX)
