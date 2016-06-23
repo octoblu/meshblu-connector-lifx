@@ -1,0 +1,4 @@
+angular: [
+  { key: "color" }
+  { key: "transitionTime" }
+]
