@@ -5,9 +5,20 @@ properties:
     title: "Options"
     type: "object"
     properties:
-      bulbName:
-        title: "Bulb Name"
-        type: "string"
+      bulbNames:
+        type: "array"
+        title: "Bulb Names"
+        description: "Bulbs to send commands to"
+        default: []
+        items:
+          title: "Bulb Name"
+          description: "Can be label, id, or ip address"
+          type: "string"
+      autoDiscover:
+        title: "Auto Discover"
+        type: "boolean"
+        default: true
     required: [
-      "bulbName"
+      "autoDiscover"
+      "bulbNames"
     ]

@@ -20,25 +20,26 @@ describe 'Connector', ->
   describe '->onConfig', ->
     beforeEach (done) ->
       options =
-        bulbName: 'hi'
+        bulbNames: ['hi']
+        autoDiscover: false
       @sut.onConfig {options}, done
 
     it 'should call lifx.connect', ->
-      expect(@lifx.connect).to.have.been.calledWith bulbName: 'hi'
+      expect(@lifx.connect).to.have.been.calledWith bulbNames: ['hi'], autoDiscover: false
 
-  describe '->changeLight', ->
+  describe '->changeLights', ->
     beforeEach (done) ->
-      @lifx.changeLight = sinon.stub().yields null
+      @lifx.changeLights = sinon.stub().yields null
       options =
         color: 'blue'
         transitionTime: 1
-      @sut.changeLight options, done
+      @sut.changeLights options, done
 
-    it 'should call lifx.changeLight', ->
+    it 'should call lifx.changeLights', ->
       options =
         color: 'blue'
         transitionTime: 1
-      expect(@lifx.changeLight).to.have.been.calledWith options
+      expect(@lifx.changeLights).to.have.been.calledWith options
 
   describe '->turnOff', ->
     beforeEach (done) ->

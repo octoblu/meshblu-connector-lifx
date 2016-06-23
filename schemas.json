@@ -1,33 +1,233 @@
 {
   "schemas": {
-    "version": "1.0.0",
-    "message": {
-      "configure-light": {
-        "title": "Configure Light",
-        "type": "object",
+    "configure": {
+      "Default": {
         "properties": {
-          "bulbName": {
-            "title": "Bulb Name",
-            "description": "If not specified, it will use the first lifx found",
-            "type": "string"
-          },
-          "on": {
-            "title": "Light On",
-            "type": "boolean",
-            "default": true
-          },
-          "color": {
-            "title": "Color",
-            "type": "string"
-          },
-          "timing": {
-            "title": "Timing",
-            "type": "number",
-            "default": 0
+          "options": {
+            "properties": {
+              "autoDiscover": {
+                "default": true,
+                "title": "Auto Discover",
+                "type": "boolean"
+              },
+              "bulbNames": {
+                "default": [
+                ],
+                "description": "Bulbs to send commands to",
+                "items": {
+                  "title": "Bulb Name",
+                  "type": "string"
+                },
+                "title": "Bulb Names",
+                "type": "array"
+              }
+            },
+            "required": [
+              "autoDiscover",
+              "bulbNames"
+            ],
+            "title": "Options",
+            "type": "object"
           }
         },
-        "required": ["on", "color"]
+        "title": "Default Configuration",
+        "type": "object",
+        "x-form-schema": {
+          "angular": "configure.Default.angular"
+        }
       }
-    }
+    },
+    "form": {
+      "configure": {
+        "Default": {
+          "angular": [
+            {
+              "key": "options.autoDiscover"
+            },
+            {
+              "key": "options.bulbNames"
+            }
+          ]
+        }
+      },
+      "message": {
+        "ChangeLights": {
+          "angular": [
+            {
+              "key": "data.color"
+            },
+            {
+              "key": "data.transitionTime"
+            }
+          ]
+        },
+        "Off": {
+          "angular": [
+            {
+              "key": "lightNumber"
+            },
+            {
+              "key": "color"
+            },
+            {
+              "key": "on"
+            },
+            {
+              "key": "transitionTime"
+            },
+            {
+              "key": "alert",
+              "titleMap": [
+                {
+                  "name": "None",
+                  "value": "none"
+                },
+                {
+                  "name": "On",
+                  "value": "select"
+                }
+              ],
+              "type": "select"
+            },
+            {
+              "key": "effect",
+              "titleMap": [
+                {
+                  "name": "None",
+                  "value": "none"
+                },
+                {
+                  "name": "Color Loop",
+                  "value": "colorloop"
+                }
+              ],
+              "type": "select"
+            }
+          ]
+        }
+      }
+    },
+    "message": {
+      "ChangeLights": {
+        "properties": {
+          "data": {
+            "properties": {
+              "color": {
+                "default": "white",
+                "title": "Color",
+                "type": "string"
+              },
+              "transitionTime": {
+                "default": 0,
+                "title": "Transition Time (in seconds)",
+                "type": "number"
+              }
+            },
+            "required": [
+              "color",
+              "transitionTime"
+            ],
+            "type": "object"
+          },
+          "metadata": {
+            "properties": {
+              "jobType": {
+                "default": "ChangeLights",
+                "enum": [
+                  "ChangeLights"
+                ],
+                "type": "string"
+              },
+              "respondTo": {
+              }
+            },
+            "required": [
+              "jobType"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "metadata"
+        ],
+        "title": "Change Lights",
+        "type": "object",
+        "x-form-schema": {
+          "angular": "message.ChangeLights.angular"
+        },
+        "x-response-schema": "ChangeLights"
+      },
+      "Off": {
+        "properties": {
+          "metadata": {
+            "properties": {
+              "jobType": {
+                "default": "Off",
+                "enum": [
+                  "Off"
+                ],
+                "type": "string"
+              },
+              "respondTo": {
+              }
+            },
+            "required": [
+              "jobType"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "metadata"
+        ],
+        "title": "Turn Off",
+        "type": "object",
+        "x-form-schema": {
+          "angular": "message.Off.angular"
+        },
+        "x-response-schema": "Off"
+      }
+    },
+    "response": {
+      "ChangeLights": {
+        "properties": {
+          "metadata": {
+            "properties": {
+              "code": {
+                "type": "integer"
+              },
+              "status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "code"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      "Off": {
+        "properties": {
+          "metadata": {
+            "properties": {
+              "code": {
+                "type": "integer"
+              },
+              "status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "code"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    "version": "2.0.0"
   }
 }

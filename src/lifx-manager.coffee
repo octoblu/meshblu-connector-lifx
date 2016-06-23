@@ -1,5 +1,6 @@
 _               = require 'lodash'
-Lifx            = require 'lifx'
+async           = require 'async'
+Lifx            = require('node-lifx').Client
 tinycolor       = require 'tinycolor2'
 debug           = require('debug')('meshblu-connector-lifx:lifx-manager')
 
@@ -8,36 +9,48 @@ MAX_KELVIN = 9000
 
 class LifxManager
   constructor: ->
-    # hook for testing
+    # hooks for testing
     @Lifx = Lifx
+    @lifx = new @Lifx
 
-  connect: ({@bulbName}, callback) =>
-    @lifx = @Lifx.init()
+  connect: ({@autoDiscover, @bulbNames}, callback) =>
+    @lifx.destroy()
+    @lifx.init()
+
     callback()
 
-  _getBulb: =>
-    _.find @lifx.bulbs, { name: @bulbName }
+  _getBulbs: =>
+    return @lifx.lights() if @autoDiscover
+    _.compact _.map @bulbNames, (bulbName) =>
+      @lifx.light bulbName
 
-  changeLight: ({color, transitionTime}, callback) =>
-    bulb = @_getBulb()
-    return callback new Error 'Bulb not found' unless bulb?
+  changeLights: ({color, transitionTime}, callback) =>
+    bulbs = @_getBulbs()
+    return callback new Error 'Bulbs not found' if _.isEmpty bulbs
 
+    async.each bulbs, (bulb, next) =>
+      @_changeLight {color, transitionTime, bulb}, next
+    , callback
+
+  _changeLight: ({color, transitionTime, bulb}, callback) =>
     hsv  = tinycolor(color).toHsv()
-    hue  = parseInt((hsv.h/360) * UINT16_MAX)
-    sat  = parseInt(hsv.s * UINT16_MAX)
-    bri  = parseInt(hsv.v * hsv.a * UINT16_MAX)
+    hue = parseInt(hsv.h)
+    sat = parseInt(hsv.s * 100)
+    bri = parseInt((hsv.v * hsv.a) * 100)
     temp = parseInt(hsv.a * MAX_KELVIN)
 
-    @lifx.lightsOn bulb
-    @lifx.lightsColour hue, sat, bri, temp, transitionTime, bulb
+    bulb.on()
+    bulb.color hue, sat, bri, temp, transitionTime * 1000
 
     callback()
 
   turnOff: (callback) =>
-    bulb = @_getBulb()
-    return callback new Error 'Bulb not found' unless bulb?
+    bulbs = @_getBulbs()
+    return callback new Error 'Bulbs not found' if _.isEmpty bulbs
 
-    @lifx.lightsOff bulb
+    _.each bulbs, (bulb) =>
+      bulb.off()
+
     callback()
 
 module.exports = LifxManager

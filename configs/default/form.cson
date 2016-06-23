@@ -1,3 +1,4 @@
 angular: [
-  { key: "options.bulbName" }
+  { key: "options.autoDiscover" }
+  { key: "options.bulbNames" }
 ]

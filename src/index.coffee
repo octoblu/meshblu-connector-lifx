@@ -6,8 +6,8 @@ class Connector extends EventEmitter
   constructor: ->
     @lifx = new LifxManager
 
-  changeLight: (data, callback) =>
-    @lifx.changeLight data, callback
+  changeLights: (data, callback) =>
+    @lifx.changeLights data, callback
 
   isOnline: (callback) =>
     callback null, running: true
@@ -19,8 +19,8 @@ class Connector extends EventEmitter
   onConfig: (device={}, callback=->) =>
     { @options } = device
     debug 'on config', @options
-    { bulbName } = @options ? {}
-    @lifx.connect { bulbName }, callback
+    { bulbNames, autoDiscover } = @options ? {}
+    @lifx.connect { bulbNames, autoDiscover }, callback
 
   start: (device, callback) =>
     debug 'started'

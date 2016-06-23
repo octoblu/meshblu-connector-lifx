@@ -1,0 +1,18 @@
+title: 'Change Lights'
+type: 'object'
+properties:
+  data:
+    type: 'object'
+    properties:
+      color:
+        title: 'Color'
+        type: 'string'
+        default: 'white'
+      transitionTime:
+        title: 'Transition Time (in seconds)'
+        type: 'number'
+        default: 0
+    required: [
+      'color'
+      'transitionTime'
+    ]

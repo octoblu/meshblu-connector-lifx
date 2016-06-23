@@ -1,13 +1,12 @@
-{job} = require '../../jobs/change-light'
+{job} = require '../../jobs/change-lights'
 
-describe 'ChangeLight', ->
+describe 'ChangeLights', ->
   context 'when given a valid message', ->
     beforeEach (done) ->
       @connector =
-        changeLight: sinon.stub().yields null
+        changeLights: sinon.stub().yields null
       message =
         data:
-          on: true
           color: 'white'
           transitionTime: 1000
       @sut = new job {@connector}
@@ -17,12 +16,11 @@ describe 'ChangeLight', ->
     it 'should not error', ->
       expect(@error).not.to.exist
 
-    it 'should call changeLight', ->
+    it 'should call changeLights', ->
       data =
-        on: true
         color: 'white'
         transitionTime: 1000
-      expect(@connector.changeLight).to.have.been.calledWith data
+      expect(@connector.changeLights).to.have.been.calledWith data
 
   context 'when given an invalid message', ->
     beforeEach (done) ->
